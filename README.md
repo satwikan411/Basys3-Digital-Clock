@@ -12,7 +12,7 @@ This project demonstrates **hardware-software co-design**, **clock domain manage
 *   **Peripherals:** 100MHz onboard oscillator, 4-digit 7-segment display, push buttons.
 
 ## Architecture & Technical Implementation
-The design is highly modular. The top-level module (`dig_clk.v`) instantiates and connects the following sub-modules:
+The design is highly modular. The top-level module **(`dig_clk.v`)** instantiates and connects the following sub-modules:
 
 1.  **Clock Divider (`clock_divider.v`):** Divides the 100MHz system clock down to a 1Hz signal to drive the real-time seconds counter.
 2.  **BCD Counters (`BCDcounter.v` & `JK_FF.v`):** Implements cascaded Binary Coded Decimal counters using JK Flip-Flops to handle the seconds (00-59) and minutes (00-59) logic.
