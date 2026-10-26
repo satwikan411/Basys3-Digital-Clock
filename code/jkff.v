@@ -3,28 +3,31 @@
 module JK_FF(
     input J,
     input K,
+    input pst,
+    input clr,
     input clk,
-    input clr,  // Clear (Active High)
-    input pst,  // Preset (Active High)
     output reg Q,
     output Qbar
     );
     
-    assign Qbar = ~Q; // Qbar is always the inverse of Q
+    assign Qbar = ~Q; // Automatically inverse, prevents glitches
     
-    always @(posedge clk or posedge clr or posedge pst)
+    always @(negedge clk or posedge clr or posedge pst)
     begin
-        if (clr)
-            Q <= 1'b0;
-        else if (pst)
-            Q <= 1'b1;
-        else begin
-            case ({J, K})
-                2'b00: Q <= Q;      // Hold
-                2'b01: Q <= 1'b0;   // Reset
-                2'b10: Q <= 1'b1;   // Set
-                2'b11: Q <= ~Q;     // Toggle
-            endcase
+        if(clr==1) begin
+            Q <= 0;
         end
-    end
+        else if(pst==1) begin
+            Q <= 1;
+        end
+        else if(J==0 && K==0) begin
+            Q <= Q;
+        end
+        else if(J==1 && K==1) begin
+            Q <= ~Q;
+        end
+        else if(J != K) begin // FIXED: Replaced J == -K with J != K
+            Q <= J;
+        end
+    end    
 endmodule
